@@ -1,0 +1,91 @@
+[
+  {
+    "id": "prd-ck-one",
+    "name": "Calvin Klein CK One Eau de Toilette 100ml",
+    "slug": "calvin-klein-ck-one",
+    "description": "Fragrância icônica unissex com notas cítricas e frescas.",
+    "priceCents": 38990,
+    "stock": 25,
+    "sku": "CK-ONE-100",
+    "categoryId": "fresh",
+    "images": ["https://images.unsplash.com/photo-1507679799987-c73779587ccf"]
+  },
+  {
+    "id": "prd-jadore",
+    "name": "Dior J'adore Eau de Parfum 75ml",
+    "slug": "dior-j-adore",
+    "description": "Bouquet floral luminoso, perfeito para ocasiões especiais.",
+    "priceCents": 59990,
+    "stock": 18,
+    "sku": "DI-JAD-075",
+    "categoryId": "floral",
+    "images": ["https://images.unsplash.com/photo-1523293832814-2697587f0f41"]
+  },
+  {
+    "id": "prd-sauvage",
+    "name": "Dior Sauvage Eau de Toilette 100ml",
+    "slug": "dior-sauvage",
+    "description": "Perfume masculino intenso com notas amadeiradas e frescas.",
+    "priceCents": 54990,
+    "stock": 30,
+    "sku": "DI-SAU-100",
+    "categoryId": "amadeirado",
+    "images": ["https://images.unsplash.com/photo-1524592094714-0f0654e20314"]
+  },
+  {
+    "id": "prd-goodgirl",
+    "name": "Carolina Herrera Good Girl Eau de Parfum 80ml",
+    "slug": "carolina-herrera-good-girl",
+    "description": "Combinação ousada de notas orientais e amadeiradas.",
+    "priceCents": 48990,
+    "stock": 22,
+    "sku": "CH-GG-080",
+    "categoryId": "oriental",
+    "images": ["https://images.unsplash.com/photo-1524592094714-0f0654e20314?ixlib=rb-4.0.3"]
+  },
+  {
+    "id": "prd-lavie",
+    "name": "Lancôme La Vie Est Belle Eau de Parfum 75ml",
+    "slug": "lancome-la-vie-est-belle",
+    "description": "Doce e sofisticado, com notas de íris e patchouli.",
+    "priceCents": 56990,
+    "stock": 16,
+    "sku": "LA-LVEB-075",
+    "categoryId": "floral",
+    "images": ["https://images.unsplash.com/photo-1523293832814-2697587f0f41?ixlib=rb-4.0.3"]
+  },
+  {
+    "id": "prd-bleuchanel",
+    "name": "Bleu de Chanel Eau de Parfum 100ml",
+    "slug": "bleu-de-chanel",
+    "description": "Elegância moderna em notas amadeiradas aromáticas.",
+    "priceCents": 63990,
+    "stock": 20,
+    "sku": "CH-BLEU-100",
+    "categoryId": "amadeirado",
+    "images": ["https://images.unsplash.com/photo-1504052434569-70ad5836ab65"]
+  },
+  {
+    "id": "prd-lightblue",
+    "name": "Dolce & Gabbana Light Blue Eau de Toilette 100ml",
+    "slug": "dolce-gabbana-light-blue",
+    "description": "Cítrico refrescante inspirado no Mediterrâneo.",
+    "priceCents": 42990,
+    "stock": 28,
+    "sku": "DG-LB-100",
+    "categoryId": "citricos",
+    "images": ["https://images.unsplash.com/photo-1504051771394-dd2e66b2e08f"]
+  },
+  {
+    "id": "prd-olympea",
+    "name": "Paco Rabanne Olympéa Eau de Parfum 80ml",
+    "slug": "paco-rabanne-olympea",
+    "description": "Notas orientais salgadas com baunilha e jasmim.",
+    "priceCents": 47990,
+    "stock": 26,
+    "sku": "PR-OLY-080",
+    "categoryId": "oriental",
+    "images": ["https://images.unsplash.com/photo-1519681393807-872f32a1a21a"]
+  }
+]
+
