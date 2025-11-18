@@ -7,8 +7,13 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
-import { auth } from '../config/firebase';
-import api from './api';
+import {
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp
+} from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
 
 // Verificar se Firebase está configurado
 if (!auth) {
@@ -27,52 +32,48 @@ export interface AuthResponse {
   user: User;
 }
 
-// Criar ou atualizar usuário no backend após autenticação Firebase
-const syncUserWithBackend = async (firebaseUser: FirebaseUser): Promise<AuthResponse> => {
+// Criar ou atualizar usuário no Firestore após autenticação Firebase
+const syncUserWithFirestore = async (firebaseUser: FirebaseUser): Promise<AuthResponse> => {
   try {
+    if (!db) {
+      throw new Error('Firestore não está configurado');
+    }
+
     // Obter token do Firebase (forçar refresh para garantir token válido)
     const firebaseToken = await firebaseUser.getIdToken(true);
 
-    console.log('Sincronizando usuário com backend...', {
+    console.log('Salvando usuário no Firestore...', {
       email: firebaseUser.email,
       uid: firebaseUser.uid
     });
 
-    // Enviar token para o backend para criar/sincronizar usuário
-    const response = await api.post<AuthResponse>('/auth/firebase', {
-      idToken: firebaseToken,
-      email: firebaseUser.email,
+    const userDocRef = doc(db, 'users', firebaseUser.uid);
+    const userDoc = await getDoc(userDocRef);
+
+    const userData = {
+      id: firebaseUser.uid,
+      email: firebaseUser.email!,
       name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Usuário',
-    });
+      role: 'user',
+      createdAt: userDoc.exists() ? userDoc.data().createdAt : serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
 
-    // Salvar token do backend
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      localStorage.setItem('firebaseToken', firebaseToken);
-    }
+    // Salvar no Firestore
+    await setDoc(userDocRef, userData, { merge: true });
 
-    return response.data;
+    // Salvar dados locais
+    localStorage.setItem('token', firebaseToken); // Usar firebaseToken como token
+    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('firebaseToken', firebaseToken);
+
+    return {
+      token: firebaseToken,
+      user: userData
+    };
   } catch (error: any) {
-    console.error('Erro ao sincronizar com backend:', error);
-    
-    // Melhorar mensagens de erro
-    if (error.response) {
-      const errorMessage = error.response.data?.error || 'Erro ao autenticar';
-      const errorDetails = error.response.data?.details || error.response.data?.hint;
-      
-      if (error.response.status === 500 && errorDetails) {
-        throw new Error(`${errorMessage}. ${errorDetails}`);
-      }
-      
-      throw new Error(errorMessage);
-    }
-    
-    if (error.request) {
-      throw new Error('Não foi possível conectar ao servidor. Verifique se o backend está rodando.');
-    }
-    
-    throw new Error(error.message || 'Erro desconhecido ao autenticar');
+    console.error('Erro ao salvar usuário no Firestore:', error);
+    throw new Error(error.message || 'Erro ao autenticar');
   }
 };
 
@@ -88,10 +89,10 @@ export const firebaseAuthService = {
       // Atualizar displayName se fornecido
       if (name && userCredential.user) {
         // Nota: Para atualizar displayName, você precisaria usar updateProfile
-        // Por enquanto, vamos passar o nome no syncUserWithBackend
+        // Por enquanto, vamos passar o nome no syncUserWithFirestore
       }
 
-      return await syncUserWithBackend(userCredential.user);
+      return await syncUserWithFirestore(userCredential.user);
     } catch (error: any) {
       throw new Error(this.getErrorMessage(error.code));
     }
@@ -104,7 +105,7 @@ export const firebaseAuthService = {
     }
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      return await syncUserWithBackend(userCredential.user);
+      return await syncUserWithFirestore(userCredential.user);
     } catch (error: any) {
       throw new Error(this.getErrorMessage(error.code));
     }
@@ -118,7 +119,7 @@ export const firebaseAuthService = {
     try {
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(auth, provider);
-      return await syncUserWithBackend(userCredential.user);
+      return await syncUserWithFirestore(userCredential.user);
     } catch (error: any) {
       throw new Error(this.getErrorMessage(error.code));
     }
@@ -194,4 +195,3 @@ export const firebaseAuthService = {
     }
   },
 };
-

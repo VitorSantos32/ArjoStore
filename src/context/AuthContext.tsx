@@ -19,8 +19,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     let isMounted = true;
-    let retryCount = 0;
-    const MAX_RETRIES = 3;
 
     // Verificar se Firebase está configurado antes de observar mudanças
     try {
@@ -30,40 +28,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         if (firebaseUser) {
           // Usuário está autenticado no Firebase
-          // Buscar dados do usuário no backend
-          try {
-            const { user: backendUser } = await authService.getMe();
-            if (isMounted) {
-              setUser(backendUser);
-              setLoading(false);
-            }
-          } catch (error: any) {
-            // Se não conseguir buscar do backend
-            if (error.response?.status === 401) {
-              // Token inválido, limpar e usar dados do localStorage
-              const currentUser = authService.getCurrentUser();
-              if (isMounted) {
-                setUser(currentUser);
-                setLoading(false);
-              }
-            } else if (retryCount < MAX_RETRIES) {
-              // Tentar novamente apenas algumas vezes
-              retryCount++;
-              setTimeout(() => {
-                if (isMounted) {
-                  const currentUser = authService.getCurrentUser();
-                  setUser(currentUser);
-                  setLoading(false);
-                }
-              }, 1000);
-            } else {
-              // Máximo de tentativas atingido
-              if (isMounted) {
-                const currentUser = authService.getCurrentUser();
-                setUser(currentUser);
-                setLoading(false);
-              }
-            }
+          // Usar dados do localStorage salvos durante a autenticação
+          const currentUser = authService.getCurrentUser();
+          if (isMounted) {
+            setUser(currentUser);
+            setLoading(false);
           }
         } else {
           // Usuário não está autenticado
@@ -133,4 +102,3 @@ export const useAuth = () => {
   }
   return context;
 };
-

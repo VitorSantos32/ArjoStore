@@ -1,5 +1,6 @@
 import { initializeApp, FirebaseApp } from 'firebase/app';
 import { getAuth, Auth } from 'firebase/auth';
+import { getFirestore, Firestore } from 'firebase/firestore';
 
 // Configuração do Firebase
 // Substitua pelos valores do seu projeto Firebase
@@ -34,22 +35,25 @@ if (missingVars.length > 0) {
 // Inicializar Firebase apenas se todas as variáveis estiverem configuradas
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
+let db: Firestore | null = null;
 
 try {
   if (missingVars.length === 0) {
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
+    db = getFirestore(app);
     console.log('✅ Firebase inicializado com sucesso');
   } else {
     console.warn('⚠️ Firebase não inicializado: variáveis de ambiente faltando');
     // Criar objetos mock para evitar erros
     auth = null as any;
+    db = null as any;
   }
 } catch (error) {
   console.error('❌ Erro ao inicializar Firebase:', error);
   auth = null as any;
+  db = null as any;
 }
 
-export { auth };
+export { auth, db };
 export default app;
-

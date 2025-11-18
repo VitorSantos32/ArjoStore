@@ -1,4 +1,3 @@
-import api from './api';
 import { firebaseAuthService } from './firebaseAuth';
 
 export interface User {
@@ -30,11 +29,7 @@ export const authService = {
     return await firebaseAuthService.loginWithGoogle();
   },
 
-  // Obter informações do usuário
-  async getMe(): Promise<{ user: User }> {
-    const response = await api.get<{ user: User }>('/auth/me');
-    return response.data;
-  },
+
 
   // Logout
   async logout(): Promise<void> {
@@ -57,4 +52,3 @@ export const authService = {
     return firebaseAuthService.onAuthStateChanged(callback);
   },
 };
-
