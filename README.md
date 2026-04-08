@@ -1,6 +1,6 @@
 # 🌟 ArjoStore - Fragrâncias de Luxo
 
-![Banner](./assets/banner.png)
+![Banner](https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=1200)
 
 Bem-vindo ao **ArjoStore**, uma plataforma de e-commerce moderna e performática dedicada à venda de perfumes e fragrâncias de luxo. Este projeto foi desenvolvido com tecnologias de ponta para oferecer uma experiência de usuário fluida e um gerenciamento eficiente.
 
@@ -96,4 +96,4 @@ Este projeto está sob a licença [MIT](./LICENSE).
 
 ---
 
-Feito com ❤️ por [Seu Nome](https://github.com/seu-usuario)
+Feito com ❤️ por [VitorSantos32](https://github.com/VitorSantos32)
